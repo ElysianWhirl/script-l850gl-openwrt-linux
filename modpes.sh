@@ -1,3 +1,9 @@
 #!/bin/ash
+#===PLEASE DO NOT REMOVE===#
+#===SCRIPT BY RUBBY_WRT====#
+#===IMPROVEMENT WELCOME====#
+#===COPYRIGHT SCRIPT=======#
 
-echo -e "AT+CFUN=4\r" > "/dev/ttyACM2" && sleep 2 && ifdown wwan0 && sleep 2 && echo -e "AT+CFUN=1\r" > "/dev/ttyACM2" && sleep 1 && ifup wwan0 
+interface=wwan0
+
+echo -e "AT+CFUN=4\r" > "/dev/ttyACM2" && sleep 1 && ifdown $interface && sleep 1 && echo -e "AT+CFUN=1\r" > "/dev/ttyACM2" && sleep 1 && ifup $interface 
