@@ -1,19 +1,31 @@
-#!/bin/ash
+#!/bin/sh
+#===PLEASE DO NOT REMOVE===#
+#===SCRIPT BY RUBBY_WRT====#
+#===IMPROVEMENT WELCOME====#
+#===COPYRIGHT SCRIPT=======#
 
-uci delete network.wwan0 2>/dev/null
+interface=wwan0
+gtw_metric=1
+
+uci delete network.$interface 2>/dev/null
 uci commit network
-echo "delete wwan0 berhasil"
+echo "delete $interface berhasil"
 /etc/init.d/network reload
+sleep 1
 
-uci set network.wwan0=interface
-uci set network.wwan0.proto='modemmanager'
-uci set network.wwan0.device='/sys/devices/pci0000:00/0000:00:14.0/usb4/4-1'
-uci set network.wwan0.apn='internet'
-uci add_list network.wwan0.allowedauth='none'
-uci set network.wwan0.iptype='ipv4v6'
-uci set network.wwan0.loglevel='ERR'
-uci set network.wwan0.dns_metric='1'
-uci set network.wwan0.metric='1'
+uci set network.$interface=interface
+uci set network.$interface.proto='modemmanager'
+uci set network.$interface.device='/sys/devices/platform/soc/d0078080.usb/c9000000.usb/xhci-hcd.3.auto/usb1/1-1'
+uci set network.$interface.apn='internet'
+uci add_list network.$interface.allowedauth='none'
+uci set network.$interface.iptype='ipv4v6'
+uci set network.$interface.loglevel='ERR'
+
+# === TAMBAHAN: GATEWAY METRIC, DNS, DAN FORCE LINK ===
+uci set network.$interface.metric='$gtw_metric'      # Prioritas routing tinggi
+uci set network.$interface.peerdns='1'     # Gunakan DNS dari provider
+uci set network.$interface.force_link='1'  # Force link = centang di LuCI
+
 uci commit network
-echo "Konfigurasi wwan0 berhasil direcreate"
+echo "Konfigurasi $interface berhasil direcreate"
 /etc/init.d/network reload
